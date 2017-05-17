@@ -1,15 +1,25 @@
 'use strict';
 
-function permutations(arr) {
-  return [arr];
+function makePermutations(input) {
+  if (input.length === 1) {
+    return [input];
+  }
+
+  const res = [];
+  for (let i = 0; i < input.length; i++) {
+    const item = input[i];
+    const rest = [].concat(input.slice(0, i)).concat(input.slice(i+1));
+    const innerPermutes = makePermutations(rest);
+    res.push(...innerPermutes.map(p => [item].concat(p)));
+  }
+  return res;
 }
 
-const arr = ['a', 'b', 'c'];
+
+const arr = '1234'.split('');
 
 console.log('Permutations for:', arr);
-console.log('============================================\n');
+console.log('============================================');
 
-const permutationsResult = permutations(arr);
-for (let i = 0; i < permutationsResult.length; i++) {
-  console.log(permutationsResult[i]);
-}
+const permutationsResult = makePermutations(arr);
+permutationsResult.forEach((pr, i) => console.log(i + 1, pr));
